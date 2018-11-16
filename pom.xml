@@ -18,6 +18,16 @@
         <kotlin.version>1.3.10</kotlin.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray</name>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <snapshots>
