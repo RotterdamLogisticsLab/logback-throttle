@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/logback-throttle
+
+    docker:
+    - image: circleci/openjdk:8-jdk
+
+    steps:
+    - checkout
+    - restore_cache:
+        key: logback-throttle-dependencies-{{ checksum "pom.xml" }}
+    - run: mvn dependency:go-offline # gets the project dependencies
+    - save_cache:
+        paths:
+        - ~/.m2
+        key: logback-throttle-dependencies-{{ checksum "pom.xml" }}
+    - run: mvn package
+    - store_test_results:
+        path: target/surefire-reports
+    - run: mvn deploy
