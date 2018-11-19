@@ -27,3 +27,12 @@ jobs:
 
     steps:
     - run: mvn deploy
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+    - build
+    - deploy:
+        requires:
+        - build
