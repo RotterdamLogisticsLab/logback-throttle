@@ -33,7 +33,7 @@ jobs:
         name: Deploy release
         command: |
           BASE_VERSION=0.1
-          LATEST_INCREMENT=$(git describe --tags $(git rev-list --tags HEAD)|grep "^release/${BASE_VERSION}"|sed "s/release\/${BASE_VERSION}.//"|sort -rn|head -1)
+          LATEST_INCREMENT=$(git describe --tags $(git rev-list --tags HEAD) || echo ""|grep "^release/${BASE_VERSION}"|sed "s/release\/${BASE_VERSION}.//"|sort -rn|head -1)
           LATEST_INCREMENT=${LATEST_INCREMENT:--1}
           NEW_INCREMENT=$((LATEST_INCREMENT + 1))
           VERSION="${BASE_VERSION}.${NEW_INCREMENT}"
