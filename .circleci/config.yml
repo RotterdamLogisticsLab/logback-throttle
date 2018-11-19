@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     working_directory: ~/logback-throttle
 
     docker:
@@ -15,7 +15,7 @@ jobs:
         paths:
         - ~/.m2
         key: logback-throttle-dependencies-{{ checksum "pom.xml" }}
-    - run: mvn package
+    - run: mvn test
     - store_test_results:
         path: target/surefire-reports
 
@@ -26,13 +26,31 @@ jobs:
     - image: circleci/openjdk:8-jdk
 
     steps:
-    - run: mvn deploy
+    - checkout
+    - restore_cache:
+        key: logback-throttle-dependencies-{{ checksum "pom.xml" }}
+    - run:
+        name: Deploy release
+        command: |
+          BASE_VERSION=0.1
+          LATEST_INCREMENT=0
+          LATEST_COMMIT_HASH=$(git rev-list --tags=release/${BASE_VERSION}.* --max-count=1)
+          if [ -n "LATEST_COMMIT_HASH" ]; then
+              LATEST_TAG=$(git describe --tags ${LATEST_COMMIT_HASH});
+              LATEST_INCREMENT=$(echo ${LATEST_TAG}|sed 's/.*\.//');
+          fi
+          NEW_INCREMENT=$((LATEST_INCREMENT + 1))
+          VERSION="${BASE_VERSION}.${NEW_INCREMENT}"
+          git tag "release/$VERSION"
+          git push origin master --tags
+          mvn versions:set -DnewVersion=${VERSION}
+          mvn deploy
 
 workflows:
   version: 2
   build-and-deploy:
     jobs:
-    - build
+    - test
     - deploy:
         requires:
-        - build
+        - test
