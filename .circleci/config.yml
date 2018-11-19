@@ -18,4 +18,12 @@ jobs:
     - run: mvn package
     - store_test_results:
         path: target/surefire-reports
+
+  deploy:
+    working_directory: ~/logback-throttle
+
+    docker:
+    - image: circleci/openjdk:8-jdk
+
+    steps:
     - run: mvn deploy

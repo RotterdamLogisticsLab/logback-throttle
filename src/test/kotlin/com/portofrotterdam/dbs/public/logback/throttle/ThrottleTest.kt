@@ -5,6 +5,7 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.spi.LoggingEvent
 import ch.qos.logback.core.spi.FilterReply
 import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
@@ -23,6 +24,8 @@ class ThrottleTest {
             assertThat(logThrottler.decide(loggingEvent(message)), `is`(FilterReply.DENY))
         }
     }
+
+    @Test fun `should fail`() = Assert.fail()
 
     @Test fun `when I log ten messages at intervals greater than secondsToIgnore, all messages should be logged`() {
         var clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
