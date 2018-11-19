@@ -4,6 +4,8 @@ logback-throttle
 Throttle logback logging to prevent overflow of downstream systems
 
 ### Usage
+There is no version in a publicly available maven repository yet!
+
 Use it in your logback configuration like here in **logback-spring.xml**:
 ```xml    
 <?xml version="1.0" encoding="UTF-8"?>
