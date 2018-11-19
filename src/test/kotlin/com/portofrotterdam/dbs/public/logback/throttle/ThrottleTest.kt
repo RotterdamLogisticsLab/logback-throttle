@@ -25,8 +25,6 @@ class ThrottleTest {
         }
     }
 
-    @Test fun `should fail`() = Assert.fail()
-
     @Test fun `when I log ten messages at intervals greater than secondsToIgnore, all messages should be logged`() {
         var clock = Clock.fixed(Instant.now(), ZoneId.systemDefault())
         val logThrottler = Throttle()
