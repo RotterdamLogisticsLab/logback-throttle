@@ -33,14 +33,15 @@ jobs:
         name: Deploy release
         command: |
           BASE_VERSION=0.1
-          LATEST_INCREMENT=0
+          LATEST_INCREMENT=-1
           LATEST_COMMIT_HASH=$(git rev-list --tags=release/${BASE_VERSION}.* --max-count=1)
-          if [ -n "LATEST_COMMIT_HASH" ]; then
+          if [ -n "${LATEST_COMMIT_HASH}" ]; then
               LATEST_TAG=$(git describe --tags ${LATEST_COMMIT_HASH});
               LATEST_INCREMENT=$(echo ${LATEST_TAG}|sed 's/.*\.//');
           fi
           NEW_INCREMENT=$((LATEST_INCREMENT + 1))
           VERSION="${BASE_VERSION}.${NEW_INCREMENT}"
+          echo "Deploying version ${VERSION}"
           git tag "release/$VERSION"
           git push origin master --tags
           mvn versions:set -DnewVersion=${VERSION}
