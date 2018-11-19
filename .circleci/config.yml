@@ -32,6 +32,7 @@ jobs:
     - run:
         name: Deploy release
         command: |
+          git version
           BASE_VERSION=0.1
           LATEST_INCREMENT=-1
           LATEST_COMMIT_HASH=$(git rev-list --tags=release/${BASE_VERSION}.* --max-count=1)
